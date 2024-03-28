@@ -1,5 +1,5 @@
 """
-WSGI config for quotes_django_hw project.
+WSGI config for quotes_project project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes_django_hw.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes_project.settings')
 
 application = get_wsgi_application()
