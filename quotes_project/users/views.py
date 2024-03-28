@@ -31,7 +31,7 @@ def loginuser(request):
             return redirect(to='users:login')
 
         login(request, user)
-        return redirect(to='quoteapp:index')
+        return redirect(to='quotesapp:index')
 
     return render(request, 'login.html', context={"form": LoginForm()})
 
@@ -39,4 +39,4 @@ def loginuser(request):
 @login_required
 def logoutuser(request):
     logout(request)
-    return redirect(to='noteapp:main')
+    return redirect(to='quotesapp:index')
