@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Add a New Quote</h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div style="padding: 10px">
+            <label for="id_quote">Quote:</label>
+            {{ form.quote }}
+            {{ form.errors.quote }}
+        </div>
+
+        <div style="padding: 10px">
+            <label for="id_author">Author:</label>
+            {{ form.author }}
+            {{ form.errors.author }}
+        </div>
+
+        <div style="padding: 10px">
+            <label for="id_tags">Tags:</label>
+            {{ form.tags }}
+            {{ form.errors.tags }}
+        </div>
+
+        <div class="grid" style="padding: 10px">
+            <button type="submit" class="btn">Submit</button>
+            <button type="reset" class="btn secondary">Reset</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
