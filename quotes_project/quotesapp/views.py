@@ -45,6 +45,18 @@ def add_author(request):
     return render(request, 'author_form.html', {'form': AuthorForm()})
 
 
+def edit_author(request, author_id):
+    author = get_object_or_404(Author, id=author_id)
+    if request.method == 'POST':
+        form = AuthorForm(request.POST, instance=author)
+        if form.is_valid():
+            form.save()
+            return redirect('quotesapp:author_detail', author_id=author.id)
+    else:
+        form = AuthorForm(instance=author)
+    return render(request, 'edit_author.html', {'form': form, 'author': author})
+
+
 def add_quote(request):
     if request.method == 'POST':
         form = QuoteForm(request.POST)
