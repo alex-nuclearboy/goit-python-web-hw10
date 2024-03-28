@@ -2,20 +2,42 @@
 
 {% block content %}
 <div class="container">
-    <h1>Quotes</h1>
-    <div class="actions">
-        <a href="{% url 'quotesapp:add_author' %}" class="btn btn-primary">Add Author</a>
-        <a href="{% url 'quotesapp:add_tag' %}" class="btn btn-primary">Add Tag</a>
-        <a href="{% url 'quotesapp:add_quote' %}" class="btn btn-primary">Add Quote</a>
+    <div class="user-actions">
+        {% if user.is_authenticated %}
+            <a href="{% url 'users:logout' %}" class="btn btn-warning">Logout</a>
+        {% else %}
+            <a href="{% url 'users:signup' %}" class="btn btn-success">Sign Up</a>
+            <a href="{% url 'users:login' %}" class="btn btn-primary">Login</a>
+        {% endif %}
     </div>
+    <h1>Quotes</h1>
+    <div class="top-tags">
+        <h3>Top Ten Tags</h3>
+        <ul>
+            {% for tag in top_tags %}
+                <li><a href="{% url 'quotesapp:quotes_by_tag' tag.id %}">{{ tag.name }}</a> ({{ tag.num_quotes }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if user.is_authenticated %}
+        <div class="actions">
+            <a href="{% url 'quotesapp:add_author' %}" class="btn btn-primary">Add Author</a>
+            <a href="{% url 'quotesapp:add_tag' %}" class="btn btn-primary">Add Tag</a>
+            <a href="{% url 'quotesapp:add_quote' %}" class="btn btn-primary">Add Quote</a>
+        </div>
+    {% endif %}
     {% for quote in quotes %}
         <div class="quote">
             <p>"{{ quote.quote }}"</p>
             <p>by <a href="{% url 'quotesapp:author_detail' author_id=quote.author.id %}">{{ quote.author.fullname }}</a></p>
-            <p><b>Tags:</b> {% for tag in quote.tags.all %}
-                <span class="tag">{{ tag.name }}</span>{% endfor %}
+            <p><b>Tags:</b>
+                {% for tag in quote.tags.all %}
+                    <a href="{% url 'quotesapp:quotes_by_tag' tag.id %}" class="tag">{{ tag.name }}</a>
+                {% endfor %}
             </p>
-            <a href="{% url 'quotesapp:edit_quote' quote_id=quote.id %}" class="btn btn-secondary">Edit</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'quotesapp:edit_quote' quote_id=quote.id %}" class="btn btn-secondary">Edit</a>
+            {% endif %}
         </div>
     {% endfor %}
     <div class="pagination">
