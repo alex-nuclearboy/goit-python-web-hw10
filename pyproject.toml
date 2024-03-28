@@ -1,15 +1,13 @@
 [tool.poetry]
 name = "goit-python-web-hw10"
 version = "0.1.0"
-description = "Django project"
+description = "GoIT Django homework project"
 authors = ["Alex Khreptak <alex.nuclearboy@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django = "^5.0.3"
-psycopg2-binary = "^2.9.9"
 
 
 [build-system]
