@@ -1,12 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Quotes</h1>
-{% for quote in quotes %}
-    <p>{{ quote.quote }}</p>
-    <p>by  <a href="{% url 'quotesapp:author_detail' author_id=quote.author.id %}" target="_self">{{ quote.author }}</a></p>
-    <p><b>Tags:</b>{% for tag in quote.tags.all %}
-        <span class="tag">{{ tag.name }}</span>
-    {% endfor %}</p>
-{% endfor %}
+<div class="container">
+    <h1>Quotes</h1>
+    <div class="actions">
+        <a href="{% url 'quotesapp:add_author' %}" class="btn btn-primary">Add Author</a>
+        <a href="{% url 'quotesapp:add_tag' %}" class="btn btn-primary">Add Tag</a>
+        <a href="{% url 'quotesapp:add_quote' %}" class="btn btn-primary">Add Quote</a>
+    </div>
+    {% for quote in quotes %}
+        <div class="quote">
+            <p>"{{ quote.quote }}"</p>
+            <p>by <a href="{% url 'quotesapp:author_detail' author_id=quote.author.id %}">{{ quote.author.fullname }}</a></p>
+            <p><b>Tags:</b> {% for tag in quote.tags.all %}
+                <span class="tag">{{ tag.name }}</span>{% endfor %}
+            </p>
+            <a href="{% url 'quotesapp:edit_quote' quote_id=quote.id %}" class="btn btn-secondary">Edit</a>
+        </div>
+    {% endfor %}
+    <div class="pagination">
+        {% if quotes.has_previous %}
+            <a href="?page=1" class="btn btn-outline">First</a>
+            <a href="?page={{ quotes.previous_page_number }}" class="btn btn-outline">Previous</a>
+        {% endif %}
+        
+        <span class="current-page">Page {{ quotes.number }} of {{ quotes.paginator.num_pages }}</span>
+        
+        {% if quotes.has_next %}
+            <a href="?page={{ quotes.next_page_number }}" class="btn btn-outline">Next</a>
+            <a href="?page={{ quotes.paginator.num_pages }}" class="btn btn-outline">Last</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
