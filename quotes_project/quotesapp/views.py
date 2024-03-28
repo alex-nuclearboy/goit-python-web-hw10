@@ -5,13 +5,18 @@ from django.core.paginator import Paginator
 from .models import Quote, Author, Tag
 from .forms import TagForm, AuthorForm, QuoteForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+
 
 def main(request):
-    quotes_list = Quote.objects.all()
+    quotes_list = Quote.objects.all().order_by('-created_at')
     elem_per_page = 10
     paginator = Paginator(quotes_list, elem_per_page)
 
     page = request.GET.get('page')
+
+    top_tags = get_top_ten_tags()
 
     try:
         quotes = paginator.page(page)
@@ -21,8 +26,10 @@ def main(request):
         quotes = paginator.page(paginator.num_pages)
 
     context = {
+        'top_tags': top_tags,
         'quotes': quotes
     }
+
     return render(request, 'index.html', context=context)
 
 
@@ -32,6 +39,7 @@ def author_detail(request, author_id):
     return render(request, 'author_detail.html', context)
 
 
+@login_required
 def add_tag(request):
     if request.method == 'POST':
         form = TagForm(request.POST)
@@ -44,6 +52,7 @@ def add_tag(request):
     return render(request, 'tag_form.html', {'form': TagForm()})
 
 
+@login_required
 def add_author(request):
     if request.method == 'POST':
         form = AuthorForm(request.POST)
@@ -55,6 +64,7 @@ def add_author(request):
     return render(request, 'author_form.html', {'form': AuthorForm()})
 
 
+@login_required
 def edit_author(request, author_id):
     author = get_object_or_404(Author, id=author_id)
     if request.method == 'POST':
@@ -70,6 +80,7 @@ def edit_author(request, author_id):
     return render(request, 'edit_author.html', {'form': form, 'author': author})
 
 
+@login_required
 def add_quote(request):
     tags = Tag.objects.all()
 
@@ -89,6 +100,7 @@ def add_quote(request):
     return render(request, 'quote_form.html', {"tags": tags, 'form': QuoteForm()})
 
 
+@login_required
 def edit_quote(request, quote_id):
     quote = get_object_or_404(Quote, id=quote_id)
     if request.method == 'POST':
@@ -99,3 +111,22 @@ def edit_quote(request, quote_id):
     else:
         form = QuoteForm(instance=quote)
     return render(request, 'edit_quote.html', {'form': form})
+
+
+def quotes_by_tag(request, tag_id):
+    tag = get_object_or_404(Tag, id=tag_id)
+    quotes = tag.quote_set.all()
+    return render(request, 'quotes_by_tag.html', {'tag': tag, 'quotes': quotes})
+
+
+def get_top_ten_tags():
+    top_tags = Tag.objects.annotate(num_quotes=Count('quote')).order_by('-num_quotes')[:10]
+    return top_tags
+
+
+def some_view(request):
+    top_tags = get_top_ten_tags()
+    context = {
+        'top_tags': top_tags,
+    }
+    return render(request, 'index.html', context)
