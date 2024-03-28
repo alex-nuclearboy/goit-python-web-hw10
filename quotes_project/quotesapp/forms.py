@@ -1,5 +1,5 @@
 from django.forms import ModelForm, CharField, DateField
-from django.forms import TextInput, ModelChoiceField, ModelMultipleChoiceField, CheckboxSelectMultiple
+from django.forms import TextInput, ModelChoiceField, ModelMultipleChoiceField, SelectMultiple
 from .models import Tag, Author, Quote
 
 
@@ -32,16 +32,12 @@ class AuthorForm(ModelForm):
 
 class QuoteForm(ModelForm):
 
+    tags = ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, widget=SelectMultiple())
     quote = CharField(
         min_length=3, max_length=255, required=True, widget=TextInput()
     )
     author = ModelChoiceField(queryset=Author.objects.all())
-    tags = ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        widget=CheckboxSelectMultiple(),
-        required=False
-    )
 
     class Meta:
         model = Quote
-        fields = ["quote", "author", "tags"]
+        fields = ["quote", "author", 'tags']
