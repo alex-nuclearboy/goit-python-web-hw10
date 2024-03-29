@@ -122,11 +122,3 @@ def quotes_by_tag(request, tag_id):
 def get_top_ten_tags():
     top_tags = Tag.objects.annotate(num_quotes=Count('quote')).order_by('-num_quotes')[:10]
     return top_tags
-
-
-def some_view(request):
-    top_tags = get_top_ten_tags()
-    context = {
-        'top_tags': top_tags,
-    }
-    return render(request, 'index.html', context)
