@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
 
@@ -6,6 +6,7 @@ services:
     image: postgres:latest
     container_name: quotes-postgres
     restart: always
+    shm_size: 128mb
     environment:
       POSTGRES_USER: alex
       POSTGRES_PASSWORD: aN9e94poEi
@@ -17,3 +18,8 @@ services:
       - type: bind
         source: ./db_data
         target: /var/lib/postgresql/data
+    adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 8080:8080
