@@ -30,13 +30,13 @@ def main(request):
         'quotes': quotes
     }
 
-    return render(request, 'index.html', context=context)
+    return render(request, 'quotesapp/index.html', context=context)
 
 
 def author_detail(request, author_id):
     author = get_object_or_404(Author, id=author_id)
     context = {"author": author}
-    return render(request, 'author_detail.html', context)
+    return render(request, 'quotesapp/author_detail.html', context)
 
 
 @login_required
@@ -47,9 +47,9 @@ def add_tag(request):
             form.save()
             return redirect(to='quotesapp:index')
         else:
-            return render(request, 'tag_form.html', {'form': form})
+            return render(request, 'quotesapp/tag_form.html', {'form': form})
 
-    return render(request, 'tag_form.html', {'form': TagForm()})
+    return render(request, 'quotesapp/tag_form.html', {'form': TagForm()})
 
 
 @login_required
@@ -60,8 +60,8 @@ def add_author(request):
             form.save()
             return redirect(to='quotesapp:index')
         else:
-            return render(request, 'author_form.html', {'form': form})
-    return render(request, 'author_form.html', {'form': AuthorForm()})
+            return render(request, 'quotesapp/author_form.html', {'form': form})
+    return render(request, 'quotesapp/author_form.html', {'form': AuthorForm()})
 
 
 @login_required
@@ -77,7 +77,7 @@ def edit_author(request, author_id):
             messages.error(request, 'Error updating author.')
     else:
         form = AuthorForm(instance=author)
-    return render(request, 'edit_author.html', {'form': form, 'author': author})
+    return render(request, 'quotesapp/edit_author.html', {'form': form, 'author': author})
 
 
 @login_required
@@ -95,9 +95,9 @@ def add_quote(request):
 
             return redirect(to='quotesapp:index')
         else:
-            return render(request, 'quote_form.html', {"tags": tags, 'form': form})
+            return render(request, 'quotesapp/quote_form.html', {"tags": tags, 'form': form})
 
-    return render(request, 'quote_form.html', {"tags": tags, 'form': QuoteForm()})
+    return render(request, 'quotesapp/quote_form.html', {"tags": tags, 'form': QuoteForm()})
 
 
 @login_required
@@ -110,13 +110,13 @@ def edit_quote(request, quote_id):
             return redirect(to='quotesapp:index')
     else:
         form = QuoteForm(instance=quote)
-    return render(request, 'edit_quote.html', {'form': form})
+    return render(request, 'quotesapp/edit_quote.html', {'form': form})
 
 
 def quotes_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, id=tag_id)
     quotes = tag.quote_set.all()
-    return render(request, 'quotes_by_tag.html', {'tag': tag, 'quotes': quotes})
+    return render(request, 'quotesapp/quotes_by_tag.html', {'tag': tag, 'quotes': quotes})
 
 
 def get_top_ten_tags():
@@ -129,4 +129,4 @@ def some_view(request):
     context = {
         'top_tags': top_tags,
     }
-    return render(request, 'index.html', context)
+    return render(request, 'quotesapp/index.html', context)
