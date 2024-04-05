@@ -15,9 +15,9 @@ def signupuser(request):
             form.save()
             return redirect(to='quotesapp:index')
         else:
-            return render(request, 'signup.html', context={"form": form})
+            return render(request, 'users/signup.html', context={"form": form})
 
-    return render(request, 'signup.html', context={"form": RegisterForm()})
+    return render(request, 'users/signup.html', context={"form": RegisterForm()})
 
 
 def loginuser(request):
@@ -33,7 +33,7 @@ def loginuser(request):
         login(request, user)
         return redirect(to='quotesapp:index')
 
-    return render(request, 'login.html', context={"form": LoginForm()})
+    return render(request, 'users/login.html', context={"form": LoginForm()})
 
 
 @login_required
