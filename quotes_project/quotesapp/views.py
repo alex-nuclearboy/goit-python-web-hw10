@@ -53,12 +53,6 @@ def add_tag(request):
 
 
 @login_required
-def delete_tag(request, tag_id):
-    Tag.objects.get(pk=tag_id).delete()
-    return redirect(to='quotesapp:index')
-
-
-@login_required
 def add_author(request):
     if request.method == 'POST':
         form = AuthorForm(request.POST)
@@ -117,6 +111,12 @@ def edit_quote(request, quote_id):
     else:
         form = QuoteForm(instance=quote)
     return render(request, 'quotesapp/edit_quote.html', {'form': form})
+
+
+@login_required
+def delete_quote(request, quote_id):
+    Quote.objects.get(pk=quote_id).delete()
+    return redirect(to='quotesapp:index')
 
 
 def quotes_by_tag(request, tag_id):
