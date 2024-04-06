@@ -4,6 +4,7 @@
     <ul>
         <li><a href="/quotesapp" role="button"> Go back to the main page </a></li>
         <li><a href="{% url 'quotesapp:edit_author' author.id %}" role="button"> Edit Author </a></li>
+        <li><a href="{% url 'quotesapp:delete_author' author.id %}" role="button"> Delete Author </a></li>
     </ul>
 </nav>
 
