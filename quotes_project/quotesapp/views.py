@@ -81,6 +81,12 @@ def edit_author(request, author_id):
 
 
 @login_required
+def delete_author(request, author_id):
+    Author.objects.get(pk=author_id).delete()
+    return redirect(to='quotesapp:index')
+
+
+@login_required
 def add_quote(request):
     tags = Tag.objects.all()
 
