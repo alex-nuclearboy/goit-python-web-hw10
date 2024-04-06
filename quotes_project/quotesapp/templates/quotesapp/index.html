@@ -38,6 +38,7 @@
             </p>
             {% if user.is_authenticated %}
                 <a href="{% url 'quotesapp:edit_quote' quote_id=quote.id %}" class="btn btn-secondary">Edit</a>
+                <a href="{% url 'quotesapp:delete_quote' quote_id=quote.id %}" class="btn btn-secondary">Delete</a>
             {% endif %}
         </div>
     {% endfor %}
