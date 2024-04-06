@@ -53,6 +53,12 @@ def add_tag(request):
 
 
 @login_required
+def delete_tag(request, tag_id):
+    Tag.objects.get(pk=tag_id).delete()
+    return redirect(to='quotesapp:index')
+
+
+@login_required
 def add_author(request):
     if request.method == 'POST':
         form = AuthorForm(request.POST)
