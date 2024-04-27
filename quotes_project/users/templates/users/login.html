@@ -1,6 +1,9 @@
-{% extends "users/base.html" %}
-
+{% extends "quotesapp/base.html" %}
 {% block content %}
+
+<div>
+    <h2>Login</h2>
+</div>
 
 {% if messages %}
 <div>
@@ -12,6 +15,7 @@
 
 <form action="{% url 'users:login' %}" method="post">
     {% csrf_token %}
+
     <div>
         <label> Username:
             {{ form.username }}
@@ -23,7 +27,7 @@
             {{ form.password }}
         </label>
     </div>
-
+    
     <div class="grid">
         <button type="submit">Submit</button>
         <button type="reset" class="secondary">Reset</button>
