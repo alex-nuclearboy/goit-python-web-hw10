@@ -1,7 +1,5 @@
 {% extends 'quotesapp/base.html' %}
-
 {% block content %}
-
 <form method="POST" action="{% url 'quotesapp:add_tag' %}">
     {% csrf_token %}
     <div style="padding: 10px">
@@ -15,5 +13,4 @@
         <button type="reset" class="secondary">Reset</button>
     </div>
 </form>
-
 {% endblock %}
