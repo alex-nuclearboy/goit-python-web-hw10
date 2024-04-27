@@ -11,7 +11,7 @@ from django.db.models import Count
 
 def main(request):
     quotes_list = Quote.objects.all().order_by('-created_at')
-    elem_per_page = 10
+    elem_per_page = 2
     paginator = Paginator(quotes_list, elem_per_page)
 
     page = request.GET.get('page')
