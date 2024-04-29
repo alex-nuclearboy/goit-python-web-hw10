@@ -1,9 +1,21 @@
-from django.forms import ModelForm, CharField, DateField
-from django.forms import TextInput, ModelChoiceField, ModelMultipleChoiceField, SelectMultiple
+from django.forms import (
+    ModelForm,
+    CharField,
+    DateField,
+    TextInput,
+    ModelChoiceField,
+    ModelMultipleChoiceField,
+    SelectMultiple
+)
 from .models import Tag, Author, Quote
 
 
 class TagForm(ModelForm):
+    """Form for creating and updating Tag instances.
+
+    Attributes:
+        name (CharField): Field for the tag name.
+    """
 
     name = CharField(
         min_length=3, max_length=25, required=True, widget=TextInput()
@@ -15,6 +27,15 @@ class TagForm(ModelForm):
 
 
 class AuthorForm(ModelForm):
+    """Form for creating and updating Author instances.
+
+    Attributes:
+        fullname (CharField): Full name of the author.
+        birth_date (DateField): Birth date of the author.
+        birth_location (CharField): Birth location of the author.
+        description (CharField): A description field for additional
+                                 information about the author.
+    """
 
     fullname = CharField(
         min_length=3, max_length=70, required=True, widget=TextInput()
@@ -31,8 +52,19 @@ class AuthorForm(ModelForm):
 
 
 class QuoteForm(ModelForm):
+    """Form for creating and updating Quote instances.
 
-    tags = ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, widget=SelectMultiple())
+    Attributes:
+        tags (ModelMultipleChoiceField): Multiple choice field for selecting
+                                         tags associated with the quote.
+        quote (CharField): The quote text.
+        author (ModelChoiceField): Dropdown for selecting the author 
+                                   of the quote.
+    """
+
+    tags = ModelMultipleChoiceField(
+        queryset=Tag.objects.all(), required=False, widget=SelectMultiple()
+    )
     quote = CharField(
         min_length=3, max_length=255, required=True, widget=TextInput()
     )
