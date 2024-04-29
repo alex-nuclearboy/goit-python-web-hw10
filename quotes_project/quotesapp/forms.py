@@ -58,7 +58,7 @@ class QuoteForm(ModelForm):
         tags (ModelMultipleChoiceField): Multiple choice field for selecting
                                          tags associated with the quote.
         quote (CharField): The quote text.
-        author (ModelChoiceField): Dropdown for selecting the author 
+        author (ModelChoiceField): Dropdown for selecting the author
                                    of the quote.
     """
 
