@@ -1,18 +1,41 @@
 import os
+import sys
 import django
-from connect import get_mongodb
 
-from pymongo import MongoClient
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "quotes_project.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes_project.settings')
 django.setup()
 
 from quotesapp.models import Author, Tag, Quote
 
+from pymongo import MongoClient
+
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+mongodb_user = config.get('DB', 'user')
+mongodb_pass = config.get('DB', 'pass')
+mongodb_domain = config.get('DB', 'domain')
+db_name = config.get('DB', 'db_name')
+
+URI = (
+    f'mongodb+srv://{mongodb_user}:{mongodb_pass}'
+    f'@{mongodb_domain}/?retryWrites=true&'
+    'w=majority&appName=Cluster0'
+)
+
+def get_mongodb():
+    # Приклад підключення до віддаленого MongoDB
+    client = MongoClient(URI)
+    db = client[db_name]  # Назва вашої бази даних
+    return db
 
 def import_records():
     
-    db = db = get_mongodb()
+    db = get_mongodb
 
     authors = db.authors.find()
 
