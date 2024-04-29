@@ -1,44 +1,49 @@
 import os
 import sys
 import django
+import configparser
+from pymongo import MongoClient
+from quotesapp.models import Author, Tag, Quote
 
+# Append parent directory to sys.path to access Django project
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# Set Django settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes_project.settings')
 django.setup()
 
-from quotesapp.models import Author, Tag, Quote
-
-from pymongo import MongoClient
-
-import configparser
-
+# Read MongoDB connection configuration from config.ini file
 config = configparser.ConfigParser()
 config.read('utils/config.ini')
 
+# MongoDB connection parameters
 mongodb_user = config.get('DB', 'user')
 mongodb_pass = config.get('DB', 'pass')
 mongodb_domain = config.get('DB', 'domain')
 db_name = config.get('DB', 'db_name')
 
+# MongoDB connection URI
 URI = (
     f'mongodb+srv://{mongodb_user}:{mongodb_pass}'
     f'@{mongodb_domain}/?retryWrites=true&'
     'w=majority&appName=Cluster0'
 )
 
+
 def get_mongodb():
-    # Приклад підключення до віддаленого MongoDB
+    """Establish connection to the MongoDB database."""
     client = MongoClient(URI)
-    db = client[db_name]  # Назва вашої бази даних
+    db = client[db_name]
     return db
 
+
 def import_records():
-    
+    """Import records from MongoDB into Postgres."""
+
     db = get_mongodb()
 
+    # Import authors
     authors = db.authors.find()
-
     for author in authors:
         Author.objects.get_or_create(
             fullname=author['fullname'],
@@ -47,26 +52,31 @@ def import_records():
             description=author['description']
         )
 
+    # Import quotes
     quotes = db.quotes.find()
-
     for quote in quotes:
+        # Import tags associated with each quote
         tags = []
         for tag in quote['tags']:
             t, *_ = Tag.objects.get_or_create(name=tag)
             tags.append(t)
-    
+
+        # Check if quote already exists
         exist_quote = bool(len(Quote.objects.filter(quote=quote['quote'])))
 
+        # Create quote if it does not exist
         if not exist_quote:
             author = db.authors.find_one({'_id': quote['author']})
             a = Author.objects.get(fullname=author['fullname'])
             q = Quote.objects.create(
                 quote=quote['quote'],
-                author=a,            
+                author=a,
             )
+            # Associate tags with the quote
             for tag in tags:
                 q.tags.add(tag)
 
 
 if __name__ == "__main__":
+    # Run the import_records function when the script is executed
     import_records()
