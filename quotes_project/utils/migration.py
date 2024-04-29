@@ -14,7 +14,7 @@ from pymongo import MongoClient
 import configparser
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('utils/config.ini')
 
 mongodb_user = config.get('DB', 'user')
 mongodb_pass = config.get('DB', 'pass')
@@ -35,7 +35,7 @@ def get_mongodb():
 
 def import_records():
     
-    db = get_mongodb
+    db = get_mongodb()
 
     authors = db.authors.find()
 
