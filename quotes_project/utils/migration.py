@@ -37,12 +37,13 @@ def get_mongodb():
     return db
 
 
-def import_records():
-    """Import records from MongoDB into Postgres."""
+def import_authors(db):
+    """Import athors from MongoDB into Postgres.
 
-    db = get_mongodb()
+    Args:
+        db: MongoDB database instance.
+    """
 
-    # Import authors
     authors = db.authors.find()
     for author in authors:
         Author.objects.get_or_create(
@@ -52,7 +53,15 @@ def import_records():
             description=author['description']
         )
 
-    # Import quotes
+
+def import_quotes(db):
+    """
+    Import quotes from MongoDB into Postgres.
+
+    Args:
+        db: MongoDB database instance.
+    """
+
     quotes = db.quotes.find()
     for quote in quotes:
         # Import tags associated with each quote
@@ -78,5 +87,9 @@ def import_records():
 
 
 if __name__ == "__main__":
-    # Run the import_records function when the script is executed
-    import_records()
+    # Establish MongoDB connection
+    db = get_mongodb()
+
+    # Import authors and quotes
+    import_authors(db)
+    import_quotes(db)
