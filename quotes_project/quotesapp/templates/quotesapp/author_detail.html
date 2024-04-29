@@ -8,7 +8,7 @@
 <script>
     function confirmDelete(objectType, objectId) {
         if (confirm('Are you sure you want to delete this ' + objectType + '?')) {
-            window.location.href = `/quotesapp/delete/${objectType}/${objectId}/`;
+            window.location.href = `/quotesapp/${objectType}/delete/${objectId}/`;
         }
     }
 </script>
