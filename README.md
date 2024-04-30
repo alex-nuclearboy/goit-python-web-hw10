@@ -1,4 +1,4 @@
 # goit-python-web-hw10
-Django project
+GoIT Django project
 
 Quotes
