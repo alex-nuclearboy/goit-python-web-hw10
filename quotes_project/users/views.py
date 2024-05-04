@@ -8,7 +8,7 @@ from .forms import RegisterForm, LoginForm, ProfileForm
 def signupuser(request):
     """
     Handle user registration.
-    If POST request, processes form data to register a new user. Redirects to 
+    If POST request, processes form data to register a new user. Redirects to
     index page upon successful registration.
     If GET request, displays the registration form.
     """
