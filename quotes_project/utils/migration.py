@@ -40,10 +40,9 @@ def get_mongodb():
 def import_authors(db):
     """Import athors from MongoDB into Postgres.
 
-    Args:
+    Arg:
         db: MongoDB database instance.
     """
-
     authors = db.authors.find()
     for author in authors:
         Author.objects.get_or_create(
@@ -58,10 +57,9 @@ def import_quotes(db):
     """
     Import quotes from MongoDB into Postgres.
 
-    Args:
+    Arg:
         db: MongoDB database instance.
     """
-
     quotes = db.quotes.find()
     for quote in quotes:
         # Import tags associated with each quote
