@@ -14,7 +14,6 @@ class RegisterForm(UserCreationForm):
         password1 (CharField): Field for the password, with input masked.
         password2 (CharField): Field for confirming the password, also masked.
     """
-
     username = forms.CharField(min_length=5,
                                max_length=100,
                                required=True,
@@ -38,7 +37,6 @@ class LoginForm(AuthenticationForm):
     A form for logging in users. Inherits from Django's AuthenticationForm,
     which itself handles authentication logic.
     """
-
     class Meta:
         model = User
         fields = ['username', 'password']
@@ -52,7 +50,6 @@ class ProfileForm(forms.ModelForm):
     Attributes:
         avatar (ImageField): Field for uploading an avatar image.
     """
-
     avatar = forms.ImageField(widget=forms.FileInput())
 
     class Meta:
