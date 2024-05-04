@@ -1,4 +1,5 @@
 {% extends 'quotesapp/base.html' %}
+
 {% block content %}
 <h2>{{ author.fullname }}</h2>
 <p><b>Born:</b> {{ author.birth_date }} {{ author.birth_location }}</p>
@@ -20,6 +21,6 @@
         <li><a href="#" onclick="confirmDelete('author', '{{ author.id }}')" role="button" class="secondary">Delete Author</a></li>
     </ul>
 </nav>
-
 {% endif %}
+
 {% endblock %}
