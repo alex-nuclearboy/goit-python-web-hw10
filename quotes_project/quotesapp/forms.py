@@ -16,7 +16,6 @@ class TagForm(ModelForm):
     Attributes:
         name (CharField): Field for the tag name.
     """
-
     name = CharField(
         min_length=3, max_length=25, required=True, widget=TextInput()
     )
@@ -36,7 +35,6 @@ class AuthorForm(ModelForm):
         description (CharField): A description field for additional
                                  information about the author.
     """
-
     fullname = CharField(
         min_length=3, max_length=70, required=True, widget=TextInput()
     )
@@ -61,7 +59,6 @@ class QuoteForm(ModelForm):
         author (ModelChoiceField): Dropdown for selecting the author
                                    of the quote.
     """
-
     tags = ModelMultipleChoiceField(
         queryset=Tag.objects.all(), required=False, widget=SelectMultiple()
     )

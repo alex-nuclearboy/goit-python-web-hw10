@@ -12,7 +12,6 @@ def main(request):
     View function to display the homepage with a list of quotes and top tags.
     Pagination is applied to the list of quotes.
     """
-
     quotes_list = Quote.objects.all().order_by('-created_at')
     elems_per_page = 5
     paginator = Paginator(quotes_list, elems_per_page)
@@ -37,10 +36,10 @@ def main(request):
 @login_required
 def add_tag(request):
     """
-    View for adding a new tag. If POST request, process the form data.
+    View for adding a new tag.
+    If POST request, process the form data.
     If GET request, display an empty form.
     """
-
     if request.method == 'POST':
         form = TagForm(request.POST)
         if form.is_valid():
@@ -57,7 +56,6 @@ def delete_tag(request, tag_id):
     """
     View to delete a tag by ID and then redirect to the index view.
     """
-
     Tag.objects.get(pk=tag_id).delete()
     return redirect(to='quotesapp:index')
 
@@ -66,7 +64,6 @@ def author_detail(request, author_id):
     """
     View to display details of an author, retrieved by their ID.
     """
-
     author = get_object_or_404(Author, id=author_id)
     context = {"author": author}
     return render(request, 'quotesapp/author_detail.html', context)
@@ -75,10 +72,10 @@ def author_detail(request, author_id):
 @login_required
 def add_author(request):
     """
-    View for adding a new author. If POST request, process the form data.
+    View for adding a new author.
+    If POST request, process the form data.
     If GET, display an empty form.
     """
-
     if request.method == 'POST':
         form = AuthorForm(request.POST)
         if form.is_valid():
@@ -98,7 +95,6 @@ def edit_author(request, author_id):
     """
     View to edit an author's details, identified by ID.
     """
-
     author = get_object_or_404(Author, id=author_id)
     if request.method == 'POST':
         form = AuthorForm(request.POST, instance=author)
@@ -120,7 +116,6 @@ def delete_author(request, author_id):
     """
     View to delete an author by their ID and then redirect to the index view.
     """
-
     Author.objects.get(pk=author_id).delete()
     return redirect(to='quotesapp:index')
 
@@ -128,10 +123,10 @@ def delete_author(request, author_id):
 @login_required
 def add_quote(request):
     """
-    View for adding a new quote. If POST, process form data.
+    View for adding a new quote.
+    If POST, process form data.
     If GET, display an empty form.
     """
-
     tags = Tag.objects.all()
 
     if request.method == 'POST':
@@ -160,7 +155,6 @@ def edit_quote(request, quote_id):
     """
     View to edit a quote, identified by ID.
     """
-
     quote = get_object_or_404(Quote, id=quote_id)
     if request.method == 'POST':
         form = QuoteForm(request.POST, instance=quote)
@@ -177,7 +171,6 @@ def delete_quote(request, quote_id):
     """
     View to delete a quote by its ID and then redirect to the index view.
     """
-
     Quote.objects.get(pk=quote_id).delete()
     return redirect(to='quotesapp:index')
 
@@ -186,7 +179,6 @@ def quotes_by_tag(request, tag_id):
     """
     View to display quotes filtered by a specific tag ID.
     """
-
     tag = get_object_or_404(Tag, id=tag_id)
     quotes = tag.quote_set.all()
     return render(

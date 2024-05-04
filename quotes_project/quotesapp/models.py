@@ -10,7 +10,6 @@ class Tag(models.Model):
                                     automatically set to the current time
                                     when the tag is created.
     """
-
     name = models.CharField(max_length=50, null=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -30,7 +29,6 @@ class Author(models.Model):
                                     automatically set to the current time
                                     when the author is created.
     """
-
     fullname = models.CharField(max_length=70, null=False, unique=True)
     birth_date = models.DateField(null=False)
     birth_location = models.CharField(max_length=100, null=False)
@@ -54,7 +52,6 @@ class Quote(models.Model):
                                     automatically set to the current time
                                     when the quote is created.
     """
-
     quote = models.TextField(null=False)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
