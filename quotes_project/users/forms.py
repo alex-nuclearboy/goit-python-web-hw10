@@ -54,4 +54,9 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = fields = ['avatar', 'first_name', 'last_name', 'email', 'phone_number', 'birth_date']
+        fields = fields = ['avatar',
+                           'first_name',
+                           'last_name',
+                           'email',
+                           'phone_number',
+                           'birth_date']
