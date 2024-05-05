@@ -79,8 +79,8 @@ cd quotes_project/
 
 ### Starting the Server
 
-Once the migrations and data transfer are complete, you can start the Django development server:
-     - Unix/Linux/macOS:
+- Once the migrations and data transfer are complete, you can start the Django development server:
+    - Unix/Linux/macOS:
     ```bash
     python3 manage.py runserver
     ```
@@ -119,3 +119,33 @@ After registering and logging in, you gain additional capabilities:
 ### Navigation and Accessibility
 
 - **Pagination Controls:** While browsing quotes, you can use the pagination controls at the bottom of the page to navigate between pages of quotes. This makes it easy to browse through large numbers of entries without overwhelming the user.
+
+
+## Stopping the Server and Exiting
+
+When you are finished using the "Quotes" website, follow these steps to properly shut down the server and exit the development environment:
+
+- **Stopping the Server**
+
+To stop the Django development server, you simply need to press `CTRL+C` in the terminal window where the server is running. This will terminate the server process.
+
+- **Shutting Down the PostgreSQL Server**
+
+If you've started the PostgreSQL server using Docker Compose and wish to stop it, you can use the following command:
+
+```bash
+docker compose down
+```
+
+This command stops the running containers and removes the containers created by `docker compose up`, along with their networks. It’s a clean way to ensure that no unnecessary Docker processes remain running.
+If you wish to stop the container but not remove it, you can use:
+```bash
+docker compose stop
+```
+
+- **Exiting the Poetry Environment**
+```bash
+exit
+```
+
+This command will deactivate the virtual environment and return you to your system's default environment.
