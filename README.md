@@ -102,7 +102,7 @@ Once you have the "Quotes" website running, here's how you can explore and inter
 ### Viewing Quotes and Authors
 
 - **Browse Quotes:** Upon visiting the main page at [http://127.0.0.1:8000/quotesapp/](http://127.0.0.1:8000/quotesapp/), you'll be greeted with a list of all the quotes uploaded to the site. Each quote is displayed with its content, the author's name, and associated tags.
-- **Learn About Authors:** Each author's name is a clickable link. Clicking on an author's name will take you to a dedicated page that includes a biography of the author and a list of all their quotes on the site.
+- **Learn About Authors:** Each author's name is a clickable link. Clicking on an author's name will take you to a dedicated page that includes a biography of the author.
 
 ### Interacting with the Site as a Registered User
 
