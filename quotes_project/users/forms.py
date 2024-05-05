@@ -45,10 +45,17 @@ class LoginForm(AuthenticationForm):
 class ProfileForm(forms.ModelForm):
     """
     A form for editing a user's profile.
-    Specifically handles the upload of user avatars.
+    This form allows users to update their personal information and avatar
+    after they have registered and logged in.
 
     Attributes:
-        avatar (ImageField): Field for uploading an avatar image.
+        avatar (ImageField): A field for uploading an avatar image,
+                             which helps users in personalizing their profile.
+        first_name (CharField): Optional field for the user's first name.
+        last_name (CharField): Optional field for the user's last name.
+        email (EmailField): Optional field for the user's email address.
+        phone_number (CharField): Optional field for the user's phone number.
+        birth_date (DateField): Optional field for the user's date of birth.
     """
     avatar = forms.ImageField(widget=forms.FileInput())
 
