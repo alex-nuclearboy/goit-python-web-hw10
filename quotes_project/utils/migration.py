@@ -1,9 +1,6 @@
 import os
 import sys
 import django
-import configparser
-from pymongo import MongoClient
-from quotesapp.models import Author, Tag, Quote
 
 # Append parent directory to sys.path to access Django project
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -11,6 +8,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Set Django settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes_project.settings')
 django.setup()
+
+import configparser
+from pymongo import MongoClient
+from quotesapp.models import Author, Tag, Quote
 
 # Read MongoDB connection configuration from config.ini file
 config = configparser.ConfigParser()
