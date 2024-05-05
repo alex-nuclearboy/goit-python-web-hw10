@@ -26,12 +26,17 @@ class Profile(models.Model):
         default='default_avatar.png',
         upload_to='profile_images'
     )
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(blank=True)
+    phone_number = models.CharField(max_length=15, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         """
         Return the username of the user associated with this profile.
         """
-        return self.user.username
+        return f'{self.user.username} Profile'
 
     def save(self, *args, **kwargs):
         """
