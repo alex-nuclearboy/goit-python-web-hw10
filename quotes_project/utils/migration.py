@@ -9,15 +9,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes_project.settings')
 django.setup()
 
-import logging
 import configparser
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure, PyMongoError
 from quotesapp.models import Author, Tag, Quote
-
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s'
-)
 
 # Read MongoDB connection configuration from config.ini file
 config = configparser.ConfigParser()
@@ -38,12 +33,29 @@ URI = (
 
 
 def get_mongodb():
-    """Establish connection to the MongoDB database."""
-    client = MongoClient(URI)
-    db = client[db_name]
-    logging.info("Connected to MongoDB")
-    return db
+    """
+    Establish connection to the MongoDB database.
 
+    Returns:
+        db: A MongoDB database instance.
+
+    Raises:
+        ConnectionFailure: If MongoDB cannot be reached.
+        PyMongoError: If an error occurs in the connection process.
+    """
+    try:
+        client = MongoClient(URI)
+        db = client[db_name]
+        # Attempt to retrieve the server info to confirm connection
+        client.server_info()
+        print("Connected to MongoDB")
+        return db
+    except ConnectionFailure:
+        print("Failed to connect to MongoDB: Connection failed.")
+        raise
+    except PyMongoError as e:
+        print(f"An error occurred while connecting to MongoDB: {e}")
+        raise
 
 def import_authors(db):
     """Import athors from MongoDB into Postgres.
@@ -51,15 +63,18 @@ def import_authors(db):
     Arg:
         db: MongoDB database instance.
     """
-    authors = db.authors.find()
-    for author in authors:
-        Author.objects.get_or_create(
-            fullname=author['fullname'],
-            birth_date=author['born_date'],
-            birth_location=author['born_location'],
-            description=author['description']
-        )
-    logging.info("Authors imported successfully")
+    try:
+        authors = db.authors.find()
+        for author in authors:
+            Author.objects.get_or_create(
+                fullname=author['fullname'],
+                birth_date=author['born_date'],
+                birth_location=author['born_location'],
+                description=author['description']
+            )
+        print("Authors imported successfully")
+    except Exception as e:
+        print(f"An error occurred while importing authors: {e}")
 
 
 def import_quotes(db):
@@ -69,29 +84,32 @@ def import_quotes(db):
     Arg:
         db: MongoDB database instance.
     """
-    quotes = db.quotes.find()
-    for quote in quotes:
-        # Import tags associated with each quote
-        tags = []
-        for tag in quote['tags']:
-            t, *_ = Tag.objects.get_or_create(name=tag)
-            tags.append(t)
+    try:
+        quotes = db.quotes.find()
+        for quote in quotes:
+            # Import tags associated with each quote
+            tags = []
+            for tag in quote['tags']:
+                t, *_ = Tag.objects.get_or_create(name=tag)
+                tags.append(t)
+                
+            # Check if quote already exists
+            exist_quote = bool(len(Quote.objects.filter(quote=quote['quote'])))
 
-        # Check if quote already exists
-        exist_quote = bool(len(Quote.objects.filter(quote=quote['quote'])))
-
-        # Create quote if it does not exist
-        if not exist_quote:
-            author = db.authors.find_one({'_id': quote['author']})
-            a = Author.objects.get(fullname=author['fullname'])
-            q = Quote.objects.create(
-                quote=quote['quote'],
-                author=a,
-            )
-            # Associate tags with the quote
-            for tag in tags:
-                q.tags.add(tag)
-    logging.info("Quotes imported successfully")
+            # Create quote if it does not exist
+            if not exist_quote:
+                author = db.authors.find_one({'_id': quote['author']})
+                a = Author.objects.get(fullname=author['fullname'])
+                q = Quote.objects.create(
+                    quote=quote['quote'],
+                    author=a,
+                )
+                # Associate tags with the quote
+                for tag in tags:
+                    q.tags.add(tag)
+        print("Quotes imported successfully")
+    except Exception as e:
+        print(f"An error occurred while importing quotes: {e}")
 
 
 if __name__ == "__main__":
@@ -102,4 +120,4 @@ if __name__ == "__main__":
     import_authors(db)
     import_quotes(db)
 
-    logging.info("Migration completed successfully")
+    print("Migration completed successfully")
