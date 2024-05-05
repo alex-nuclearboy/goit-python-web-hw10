@@ -9,9 +9,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quotes_project.settings')
 django.setup()
 
+import logging
 import configparser
 from pymongo import MongoClient
 from quotesapp.models import Author, Tag, Quote
+
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 # Read MongoDB connection configuration from config.ini file
 config = configparser.ConfigParser()
@@ -35,6 +41,7 @@ def get_mongodb():
     """Establish connection to the MongoDB database."""
     client = MongoClient(URI)
     db = client[db_name]
+    logging.info("Connected to MongoDB")
     return db
 
 
@@ -52,6 +59,7 @@ def import_authors(db):
             birth_location=author['born_location'],
             description=author['description']
         )
+    logging.info("Authors imported successfully")
 
 
 def import_quotes(db):
@@ -83,6 +91,7 @@ def import_quotes(db):
             # Associate tags with the quote
             for tag in tags:
                 q.tags.add(tag)
+    logging.info("Quotes imported successfully")
 
 
 if __name__ == "__main__":
@@ -92,3 +101,5 @@ if __name__ == "__main__":
     # Import authors and quotes
     import_authors(db)
     import_quotes(db)
+
+    logging.info("Migration completed successfully")
