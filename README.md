@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This repository hosts a Python-based Django project titled "Quotes", a dynamic website dedicated to the exploration and sharing of famous quotations. 
+This repository hosts a Python-based Django project "Quotes", a dynamic website dedicated to the exploration and sharing of famous quotations. 
 The site serves as an educational platform to demonstrate practical applications of Django, highlighting advanced features like user authentication and database migrations. 
 The project aims to provide a practical demonstration of advanced Django features, database handling, and personalized user management.
 
