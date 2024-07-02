@@ -1,1 +1,1 @@
-web: gunicorn quotes_project.wsgi --log-file -
+web: python manage.py runserver
