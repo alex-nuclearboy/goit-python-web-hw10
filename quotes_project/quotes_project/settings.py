@@ -27,8 +27,7 @@ SECRET_KEY = 'django-insecure-n0c02c#hs#^c!2_vt8dhl8l_+#$9$&n3e+14=9^s+*k3h8x4dx
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [https://suspicious-genia-goit-project-team8-c68851eb.koyeb.app/', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['https://suspicious-genia-goit-project-team8-c68851eb.koyeb.app', 'localhost', '127.0.0.1']
 
 # Application definition
 
